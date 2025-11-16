@@ -24,6 +24,29 @@ function PlayerContent() {
   const source = searchParams.get('source');
   const title = searchParams.get('title');
 
+  const getSourceName = (sourceId: string | null): string => {
+    if (!sourceId) return '';
+    const sourceNames: Record<string, string> = {
+      'custom_0': '电影天堂',
+      'custom_1': '如意',
+      'custom_2': '暴风',
+      'custom_3': '天涯',
+      'custom_4': '非凡影视',
+      'custom_5': '360',
+      'custom_6': '卧龙',
+      'custom_7': '极速',
+      'custom_8': '魔爪',
+      'custom_9': '魔都',
+      'custom_10': '海外看',
+      'custom_11': '新浪',
+      'custom_12': '光速',
+      'custom_13': '红牛',
+      'custom_14': '樱花',
+      'custom_15': '飞速',
+    };
+    return sourceNames[sourceId] || sourceId;
+  };
+
   useEffect(() => {
     if (!videoId || !source) {
       router.push('/');
@@ -36,12 +59,19 @@ function PlayerContent() {
   const fetchVideoDetails = async () => {
     try {
       setLoading(true);
+      setVideoError(''); // Clear previous errors
       const response = await fetch(`/api/detail?id=${videoId}&source=${source}`);
       const data = await response.json();
 
       console.log('Video detail API response:', data);
 
       if (!response.ok) {
+        // Handle specific error case when source is not available
+        if (response.status === 404) {
+          setVideoError(data.error || 'This video source is not available. Please go back and try another source.');
+          setLoading(false);
+          return;
+        }
         throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -61,14 +91,14 @@ function PlayerContent() {
           setIsVideoLoading(true);
         } else {
           console.warn('No episodes found in video data');
-          setVideoError('No episodes available for this video');
+          setVideoError('No playable episodes available for this video from this source');
         }
       } else {
         throw new Error(data.error || 'Invalid response from API');
       }
     } catch (error) {
       console.error('Failed to fetch video details:', error);
-      setVideoError(error instanceof Error ? error.message : 'Failed to load video details');
+      setVideoError(error instanceof Error ? error.message : 'Failed to load video details. Please try another source.');
     } finally {
       setLoading(false);
     }
@@ -139,8 +169,35 @@ function PlayerContent() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-[var(--accent-color)] border-t-transparent"></div>
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-[var(--accent-color)] border-t-transparent mb-4"></div>
+            <p className="text-[var(--text-color-secondary)]">正在检测视频源可用性...</p>
+          </div>
+        ) : videoError && !videoData ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <Card className="max-w-2xl">
+              <Icons.AlertTriangle size={64} className="mx-auto mb-4 text-red-500" />
+              <h2 className="text-2xl font-bold text-[var(--text-color)] mb-4">视频源不可用</h2>
+              <p className="text-[var(--text-color-secondary)] mb-6">{videoError}</p>
+              <div className="flex gap-3 justify-center">
+                <Button 
+                  variant="primary"
+                  onClick={() => router.push('/')}
+                  className="flex items-center gap-2"
+                >
+                  <Icons.ChevronLeft size={20} />
+                  <span>返回搜索其他源</span>
+                </Button>
+                <Button 
+                  variant="secondary"
+                  onClick={fetchVideoDetails}
+                  className="flex items-center gap-2"
+                >
+                  <Icons.RefreshCw size={20} />
+                  <span>重新检测</span>
+                </Button>
+              </div>
+            </Card>
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 gap-6">
@@ -152,11 +209,11 @@ function PlayerContent() {
                     <div className="relative aspect-video bg-black rounded-[var(--radius-2xl)] overflow-hidden">
                       {videoError && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 z-10 p-4">
-                          <div className="text-center text-white">
+                          <div className="text-center text-white max-w-md">
                             <Icons.AlertTriangle size={48} className="mx-auto mb-4 text-red-500" />
                             <p className="text-lg font-semibold mb-2">播放失败</p>
                             <p className="text-sm text-gray-300 mb-4">{videoError}</p>
-                            <div className="flex gap-2 justify-center">
+                            <div className="flex gap-2 justify-center flex-wrap">
                               <Button 
                                 variant="primary"
                                 onClick={() => {
@@ -169,6 +226,14 @@ function PlayerContent() {
                               >
                                 <Icons.RefreshCw size={16} />
                                 <span>重试</span>
+                              </Button>
+                              <Button 
+                                variant="secondary"
+                                onClick={() => router.push('/')}
+                                className="flex items-center gap-2"
+                              >
+                                <Icons.ChevronLeft size={16} />
+                                <span>选择其他源</span>
                               </Button>
                             </div>
                           </div>
@@ -220,7 +285,7 @@ function PlayerContent() {
                     <img
                       src={videoData.vod_pic}
                       alt={videoData.vod_name}
-                      className="w-32 h-48 object-cover rounded-[var(--radius-2xl)]"
+                      className="w-32 h-48 object-cover rounded-[var(--radius-2xl)] border border-[var(--glass-border)]"
                     />
                   )}
                   <div className="flex-1">
@@ -228,8 +293,14 @@ function PlayerContent() {
                       {videoData?.vod_name || title}
                     </h1>
                     <div className="flex flex-wrap gap-2 mb-4">
+                      {source && (
+                        <Badge variant="primary" className="backdrop-blur-md">
+                          <Icons.Check size={14} className="mr-1" />
+                          {getSourceName(source)}
+                        </Badge>
+                      )}
                       {videoData?.type_name && (
-                        <Badge variant="primary">{videoData.type_name}</Badge>
+                        <Badge variant="secondary">{videoData.type_name}</Badge>
                       )}
                       {videoData?.vod_year && (
                         <Badge variant="secondary">

@@ -14,6 +14,8 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [availableSources, setAvailableSources] = useState<Array<{id: string, name: string, count: number}>>([]);
+  const [validationStatus, setValidationStatus] = useState<string>('');
   const router = useRouter();
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -21,6 +23,7 @@ export default function Home() {
     if (!query.trim()) return;
 
     setLoading(true);
+    setValidationStatus('搜索中...');
     try {
       // Get all enabled source IDs
       const sourceIds = ['custom_0', 'custom_1', 'custom_2', 'custom_3', 'custom_4', 
@@ -35,14 +38,60 @@ export default function Home() {
       const data = await response.json();
       
       if (data.success) {
-        const allResults = data.sources.flatMap((s: any) => s.results);
-        setResults(allResults);
+        setValidationStatus(`已检测 ${data.totalSources || 0} 个源，${data.availableSources || 0} 个可用`);
+        
+        // Filter out sources with no results and add source names
+        const resultsWithSources = data.sources
+          .filter((s: any) => s.results.length > 0)
+          .flatMap((s: any) => 
+            s.results.map((result: any) => ({
+              ...result,
+              sourceName: getSourceName(s.source),
+            }))
+          );
+        setResults(resultsWithSources);
+        
+        // Track available sources
+        const sourcesWithResults = data.sources
+          .filter((s: any) => s.results.length > 0)
+          .map((s: any) => ({
+            id: s.source,
+            name: getSourceName(s.source),
+            count: s.results.length,
+          }));
+        setAvailableSources(sourcesWithResults);
+
+        // Clear validation status after 3 seconds
+        setTimeout(() => setValidationStatus(''), 3000);
       }
     } catch (error) {
       console.error('Search error:', error);
+      setValidationStatus('搜索失败');
     } finally {
       setLoading(false);
     }
+  };
+
+  const getSourceName = (sourceId: string): string => {
+    const sourceNames: Record<string, string> = {
+      'custom_0': '电影天堂',
+      'custom_1': '如意',
+      'custom_2': '暴风',
+      'custom_3': '天涯',
+      'custom_4': '非凡影视',
+      'custom_5': '360',
+      'custom_6': '卧龙',
+      'custom_7': '极速',
+      'custom_8': '魔爪',
+      'custom_9': '魔都',
+      'custom_10': '海外看',
+      'custom_11': '新浪',
+      'custom_12': '光速',
+      'custom_13': '红牛',
+      'custom_14': '樱花',
+      'custom_15': '飞速',
+    };
+    return sourceNames[sourceId] || sourceId;
   };
 
   const handleVideoClick = (video: any) => {
@@ -115,7 +164,7 @@ export default function Home() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
                     </svg>
-                    搜索中...
+                    检测中...
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
@@ -125,17 +174,46 @@ export default function Home() {
                 )}
               </Button>
             </div>
+            {/* Validation Status */}
+            {validationStatus && (
+              <div className="mt-3 text-sm text-[var(--text-color-secondary)] animate-fade-in">
+                {validationStatus}
+              </div>
+            )}
           </form>
         </div>
 
         {/* Results Section */}
         {results.length > 0 && (
           <div className="animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-2xl font-bold text-[var(--text-color)] flex items-center gap-3">
-                <span>搜索结果</span>
-                <Badge variant="primary">{results.length} 个视频</Badge>
-              </h3>
+            <div className="flex flex-col gap-4 mb-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-[var(--text-color)] flex items-center gap-3">
+                  <span>搜索结果</span>
+                  <Badge variant="primary">{results.length} 个视频</Badge>
+                </h3>
+              </div>
+              
+              {/* Available Sources */}
+              {availableSources.length > 0 && (
+                <Card hover={false} className="p-4">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-semibold text-[var(--text-color)] flex items-center gap-2">
+                      <Icons.Check size={16} className="text-[var(--accent-color)]" />
+                      可用源 ({availableSources.length}):
+                    </span>
+                    {availableSources.map((source) => (
+                      <Badge 
+                        key={source.id} 
+                        variant="secondary" 
+                        className="text-xs"
+                      >
+                        {source.name} ({source.count})
+                      </Badge>
+                    ))}
+                  </div>
+                </Card>
+              )}
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
@@ -146,7 +224,7 @@ export default function Home() {
                   className="p-0 overflow-hidden group"
                 >
                   {/* Poster */}
-                  <div className="relative aspect-[2/3] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)]">
+                  <div className="relative aspect-[2/3] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden rounded-t-[var(--radius-2xl)]">
                     {video.vod_pic ? (
                       <img
                         src={video.vod_pic}
@@ -157,6 +235,15 @@ export default function Home() {
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <Icons.Film size={64} className="text-[var(--text-color-secondary)]" />
+                      </div>
+                    )}
+                    
+                    {/* Source Badge - Top Left */}
+                    {video.sourceName && (
+                      <div className="absolute top-2 left-2 z-10">
+                        <Badge variant="primary" className="text-xs backdrop-blur-md bg-[var(--accent-color)]/90">
+                          {video.sourceName}
+                        </Badge>
                       </div>
                     )}
                     

@@ -44,13 +44,6 @@
   --foreground: #1d1d1f;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 body {
   --bg-color: var(--bg-color-light);
   --bg-image: var(--bg-image-light);

@@ -1,11 +1,13 @@
 /**
  * Search API Route
  * Handles video search requests and aggregates results from multiple sources
+ * Now with automatic source availability detection
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { searchVideos } from '@/lib/api/client';
 import { getEnabledSources, getSourceById } from '@/lib/api/video-sources';
+import { checkMultipleSources, filterByAvailableSources } from '@/lib/utils/source-checker';
 import type { SearchRequest, SearchResult } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
@@ -43,12 +45,65 @@ export async function POST(request: NextRequest) {
     // Perform parallel search across sources
     const searchResults = await searchVideos(query.trim(), sources, page);
 
+    // Get source name mapping
+    const getSourceName = (sourceId: string): string => {
+      const sourceNames: Record<string, string> = {
+        'custom_0': '电影天堂',
+        'custom_1': '如意',
+        'custom_2': '暴风',
+        'custom_3': '天涯',
+        'custom_4': '非凡影视',
+        'custom_5': '360',
+        'custom_6': '卧龙',
+        'custom_7': '极速',
+        'custom_8': '魔爪',
+        'custom_9': '魔都',
+        'custom_10': '海外看',
+        'custom_11': '新浪',
+        'custom_12': '光速',
+        'custom_13': '红牛',
+        'custom_14': '樱花',
+        'custom_15': '飞速',
+      };
+      return sourceNames[sourceId] || sourceId;
+    };
+
+    // Check source availability by testing sample videos
+    console.log(`🔍 Checking availability of ${searchResults.length} sources...`);
+    const sourcesWithVideos = searchResults
+      .filter(result => result.results.length > 0)
+      .map(result => ({
+        sourceId: result.source,
+        sourceName: getSourceName(result.source),
+        videos: result.results.slice(0, 3), // Use first 3 videos as samples
+      }));
+
+    const availabilityResults = await checkMultipleSources(sourcesWithVideos);
+    
+    const availableCount = availabilityResults.filter(r => r.isAvailable).length;
+    console.log(`✅ ${availableCount} out of ${availabilityResults.length} sources are available`);
+
+    // Filter results to only include videos from available sources
+    const allVideos = searchResults.flatMap(r => r.results);
+    const availableVideos = filterByAvailableSources(allVideos, availabilityResults);
+
+    // Group available videos back by source
+    const availableSources = availabilityResults
+      .filter(r => r.isAvailable)
+      .map(r => {
+        const sourceVideos = availableVideos.filter(v => v.source === r.sourceId);
+        return {
+          source: r.sourceId,
+          results: sourceVideos,
+          responseTime: searchResults.find(sr => sr.source === r.sourceId)?.responseTime,
+        };
+      });
+
     // Format response
-    const response: SearchResult[] = searchResults.map(result => ({
+    const response: SearchResult[] = availableSources.map(result => ({
       results: result.results,
       source: result.source,
       responseTime: result.responseTime,
-      error: result.error,
     }));
 
     return NextResponse.json({
@@ -56,7 +111,10 @@ export async function POST(request: NextRequest) {
       query: query.trim(),
       page,
       sources: response,
-      totalResults: response.reduce((sum, r) => sum + r.results.length, 0),
+      totalResults: availableVideos.length,
+      availableSources: availableCount,
+      totalSources: availabilityResults.length,
+      sourceAvailability: availabilityResults,
     });
   } catch (error) {
     console.error('Search API error:', error);
@@ -106,12 +164,65 @@ export async function GET(request: NextRequest) {
     // Perform search
     const searchResults = await searchVideos(query.trim(), sources, page);
 
+    // Get source name mapping
+    const getSourceName = (sourceId: string): string => {
+      const sourceNames: Record<string, string> = {
+        'custom_0': '电影天堂',
+        'custom_1': '如意',
+        'custom_2': '暴风',
+        'custom_3': '天涯',
+        'custom_4': '非凡影视',
+        'custom_5': '360',
+        'custom_6': '卧龙',
+        'custom_7': '极速',
+        'custom_8': '魔爪',
+        'custom_9': '魔都',
+        'custom_10': '海外看',
+        'custom_11': '新浪',
+        'custom_12': '光速',
+        'custom_13': '红牛',
+        'custom_14': '樱花',
+        'custom_15': '飞速',
+      };
+      return sourceNames[sourceId] || sourceId;
+    };
+
+    // Check source availability by testing sample videos
+    console.log(`🔍 [GET] Checking availability of ${searchResults.length} sources...`);
+    const sourcesWithVideos = searchResults
+      .filter(result => result.results.length > 0)
+      .map(result => ({
+        sourceId: result.source,
+        sourceName: getSourceName(result.source),
+        videos: result.results.slice(0, 3), // Use first 3 videos as samples
+      }));
+
+    const availabilityResults = await checkMultipleSources(sourcesWithVideos);
+    
+    const availableCount = availabilityResults.filter(r => r.isAvailable).length;
+    console.log(`✅ [GET] ${availableCount} out of ${availabilityResults.length} sources are available`);
+
+    // Filter results to only include videos from available sources
+    const allVideos = searchResults.flatMap(r => r.results);
+    const availableVideos = filterByAvailableSources(allVideos, availabilityResults);
+
+    // Group available videos back by source
+    const availableSources = availabilityResults
+      .filter(r => r.isAvailable)
+      .map(r => {
+        const sourceVideos = availableVideos.filter(v => v.source === r.sourceId);
+        return {
+          source: r.sourceId,
+          results: sourceVideos,
+          responseTime: searchResults.find(sr => sr.source === r.sourceId)?.responseTime,
+        };
+      });
+
     // Format response
-    const response: SearchResult[] = searchResults.map(result => ({
+    const response: SearchResult[] = availableSources.map(result => ({
       results: result.results,
       source: result.source,
       responseTime: result.responseTime,
-      error: result.error,
     }));
 
     return NextResponse.json({
@@ -119,7 +230,10 @@ export async function GET(request: NextRequest) {
       query: query.trim(),
       page,
       sources: response,
-      totalResults: response.reduce((sum, r) => sum + r.results.length, 0),
+      totalResults: availableVideos.length,
+      availableSources: availableCount,
+      totalSources: availabilityResults.length,
+      sourceAvailability: availabilityResults,
     });
   } catch (error) {
     console.error('Search API error:', error);
