@@ -384,9 +384,6 @@ function HomePage() {
                   currentSource={currentSource}
                   checkedSources={checkedSources}
                   totalSources={16}
-                  checkedVideos={checkedVideos}
-                  totalVideos={totalVideos}
-                  stage={searchStage}
                 />
               </div>
             )}
