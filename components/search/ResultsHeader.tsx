@@ -7,16 +7,12 @@ import { SourceBadges } from './SourceBadges';
 interface ResultsHeaderProps {
   loading: boolean;
   resultsCount: number;
-  checkedVideos: number;
-  totalVideos: number;
   availableSources: Array<{ id: string; name: string; count: number }>;
 }
 
 export function ResultsHeader({
   loading,
   resultsCount,
-  checkedVideos,
-  totalVideos,
   availableSources,
 }: ResultsHeaderProps) {
   return (
@@ -27,20 +23,12 @@ export function ResultsHeader({
         </h3>
         <div className="flex items-center gap-3">
           {loading && (
-            <>
-              <Badge variant="secondary" className="text-sm">
-                <span className="flex items-center gap-2">
-                  <Icons.Search size={14} />
-                  已检测 {checkedVideos}/{totalVideos}
-                </span>
-              </Badge>
-              <Badge variant="primary" className="text-sm">
-                <span className="flex items-center gap-2">
-                  <Icons.Check size={14} />
-                  可用视频 {resultsCount}/{totalVideos}
-                </span>
-              </Badge>
-            </>
+            <Badge variant="secondary" className="text-sm">
+              <span className="flex items-center gap-2">
+                <Icons.Search size={14} />
+                搜索中...
+              </span>
+            </Badge>
           )}
           {!loading && (
             <Badge variant="primary">{resultsCount} 个视频</Badge>

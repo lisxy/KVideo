@@ -16,9 +16,6 @@ interface SearchFormProps {
   currentSource?: string;
   checkedSources?: number;
   totalSources?: number;
-  checkedVideos?: number;
-  totalVideos?: number;
-  searchStage?: 'searching' | 'checking';
 }
 
 export function SearchForm({
@@ -29,9 +26,6 @@ export function SearchForm({
   currentSource = '',
   checkedSources = 0,
   totalSources = 16,
-  checkedVideos = 0,
-  totalVideos = 0,
-  searchStage = 'searching',
 }: SearchFormProps) {
   const [query, setQuery] = useState(initialQuery);
   const [showHistory, setShowHistory] = useState(false);
@@ -123,9 +117,6 @@ export function SearchForm({
             currentSource={currentSource}
             checkedSources={checkedSources}
             totalSources={totalSources}
-            checkedVideos={checkedVideos}
-            totalVideos={totalVideos}
-            stage={searchStage}
           />
         </div>
       )}

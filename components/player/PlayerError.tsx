@@ -32,7 +32,7 @@ export function PlayerError({ error, onBack, onRetry }: PlayerErrorProps) {
             className="flex items-center gap-2"
           >
             <Icons.RefreshCw size={20} />
-            <span>重新检测</span>
+            <span>重试</span>
           </Button>
         </div>
       </Card>

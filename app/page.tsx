@@ -126,9 +126,6 @@ function HomePage() {
           currentSource=""
           checkedSources={completedSources}
           totalSources={totalSources}
-          checkedVideos={0}
-          totalVideos={totalVideosFound}
-          searchStage="searching"
         />
       </div>
 
@@ -140,8 +137,6 @@ function HomePage() {
             <ResultsHeader
               loading={loading}
               resultsCount={results.length}
-              checkedVideos={0}
-              totalVideos={totalVideosFound}
               availableSources={availableSources}
             />
             

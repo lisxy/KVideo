@@ -6,18 +6,12 @@ interface SearchLoadingAnimationProps {
   currentSource?: string;
   checkedSources?: number;
   totalSources?: number;
-  checkedVideos?: number;
-  totalVideos?: number;
-  stage?: 'searching' | 'checking';
 }
 
 export function SearchLoadingAnimation({ 
   currentSource, 
   checkedSources = 0, 
   totalSources = 16,
-  checkedVideos = 0,
-  totalVideos = 0,
-  stage = 'searching'
 }: SearchLoadingAnimationProps) {
   const [dots, setDots] = useState('');
 
@@ -28,19 +22,9 @@ export function SearchLoadingAnimation({
     return () => clearInterval(dotInterval);
   }, []);
 
-  // Calculate unified progress (0-100%)
-  // Stage 1: Search sources (0-60%)
-  // Stage 2: Check videos (60-100%)
-  let progress = 0;
-  let statusText = '';
-  
-  if (stage === 'searching') {
-    progress = totalSources > 0 ? (checkedSources / totalSources) * 60 : 0;
-    statusText = `${checkedSources}/${totalSources} 个源`;
-  } else if (stage === 'checking') {
-    progress = 60 + (totalVideos > 0 ? (checkedVideos / totalVideos) * 40 : 0);
-    statusText = `${checkedVideos}/${totalVideos} 个视频`;
-  }
+  // Calculate progress (0-100%)
+  const progress = totalSources > 0 ? (checkedSources / totalSources) * 100 : 0;
+  const statusText = `${checkedSources}/${totalSources} 个源`;
 
   return (
     <div className="w-full space-y-3 animate-fade-in">
@@ -61,7 +45,7 @@ export function SearchLoadingAnimation({
         </svg>
         
         <span className="text-sm font-medium text-[var(--text-color-secondary)]">
-          {stage === 'searching' ? '正在搜索视频源' : '正在检测视频可用性'}{dots}
+          正在搜索视频源{dots}
         </span>
       </div>
 
