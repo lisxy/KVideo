@@ -16,9 +16,9 @@ export function Badge({ children, variant = 'primary', className = '' }: BadgePr
     <span 
       className={`
         inline-flex items-center justify-center
-        px-3 py-1
+        px-2 py-0.5 md:px-3 md:py-1
         rounded-[var(--radius-full)]
-        text-xs font-semibold
+        text-[10px] md:text-xs font-semibold
         transition-all duration-200
         ${variants[variant]}
         ${className}

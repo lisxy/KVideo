@@ -17,7 +17,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           className={`
-            w-full px-6 py-4
+            w-full px-4 py-3 md:px-6 md:py-4
+            text-base md:text-[var(--text-color)]
             bg-[var(--glass-bg)]
             backdrop-blur-[10px]
             saturate-[150%]
@@ -32,6 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--accent-color)_30%,transparent)]
             transition-all
             duration-[var(--transition-fluid)]
+            touch-manipulation
             ${error ? 'border-red-500' : ''}
             ${className}
           `}

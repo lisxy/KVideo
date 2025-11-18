@@ -17,23 +17,23 @@ interface EpisodeListProps {
 
 export function EpisodeList({ episodes, currentEpisode, onEpisodeClick }: EpisodeListProps) {
   return (
-    <Card hover={false} className="sticky top-32">
-      <h3 className="text-xl font-bold text-[var(--text-color)] mb-4 flex items-center gap-2">
-        <Icons.List size={24} />
+    <Card hover={false} className="lg:sticky lg:top-32">
+      <h3 className="text-lg sm:text-xl font-bold text-[var(--text-color)] mb-4 flex items-center gap-2">
+        <Icons.List size={20} className="sm:w-6 sm:h-6" />
         <span>选集</span>
         {episodes && (
           <Badge variant="primary">{episodes.length}</Badge>
         )}
       </h3>
 
-      <div className="max-h-[600px] overflow-y-auto space-y-2 pr-2">
+      <div className="max-h-[400px] sm:max-h-[600px] overflow-y-auto space-y-2 pr-2">
         {episodes && episodes.length > 0 ? (
           episodes.map((episode, index) => (
             <button
               key={index}
               onClick={() => onEpisodeClick(episode, index)}
               className={`
-                w-full px-4 py-3 rounded-[var(--radius-2xl)] text-left transition-[var(--transition-fluid)]
+                w-full px-3 py-2 sm:px-4 sm:py-3 rounded-[var(--radius-2xl)] text-left transition-[var(--transition-fluid)]
                 ${currentEpisode === index
                   ? 'bg-[var(--accent-color)] text-white shadow-[0_4px_12px_color-mix(in_srgb,var(--accent-color)_50%,transparent)] brightness-110'
                   : 'bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] text-[var(--text-color)] border border-[var(--glass-border)]'
@@ -41,7 +41,7 @@ export function EpisodeList({ episodes, currentEpisode, onEpisodeClick }: Episod
               `}
             >
               <div className="flex items-center justify-between">
-                <span className="font-medium">
+                <span className="font-medium text-sm sm:text-base">
                   {episode.name || `第 ${index + 1} 集`}
                 </span>
                 {currentEpisode === index && (

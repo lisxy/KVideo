@@ -80,13 +80,13 @@ function PlayerContent() {
   return (
     <div className="min-h-screen bg-[var(--bg-color)]">
       {/* Glass Navbar */}
-      <nav className="sticky top-0 z-50 pt-4 pb-2">
-        <div className="max-w-7xl mx-auto mx-4 bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[0_4px_12px_color-mix(in_srgb,var(--shadow-color)_40%,transparent)] px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+      <nav className="sticky top-0 z-50 pt-4 pb-2 px-4">
+        <div className="max-w-7xl mx-auto bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[0_4px_12px_color-mix(in_srgb,var(--shadow-color)_40%,transparent)] px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
               <button 
                 onClick={() => router.push('/')}
-                className="flex items-center justify-center hover:opacity-80 transition-opacity"
+                className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0"
                 title="返回首页"
               >
                 <Image 
@@ -103,10 +103,12 @@ function PlayerContent() {
                 className="flex items-center gap-2"
               >
                 <Icons.ChevronLeft size={20} />
-                <span>返回</span>
+                <span className="hidden sm:inline">返回</span>
               </Button>
             </div>
-            <ThemeSwitcher />
+            <div className="flex-shrink-0">
+              <ThemeSwitcher />
+            </div>
           </div>
         </div>
       </nav>

@@ -78,13 +78,14 @@ export function SearchForm({
           onChange={(e) => setQuery(e.target.value)}
           onFocus={handleInputFocus}
           placeholder="搜索电影、电视剧、综艺..."
-          className="text-lg pr-32"
+          className="text-lg pr-24 md:pr-32 truncate"
         />
         {query && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-32 top-1/2 -translate-y-1/2 p-2 text-[var(--text-color-secondary)] hover:text-[var(--text-color)] transition-colors"
+            className="absolute right-20 md:right-32 top-1/2 -translate-y-1/2 p-3 md:p-2 text-[var(--text-color-secondary)] hover:text-[var(--text-color)] transition-colors touch-manipulation"
+            aria-label="清除搜索"
           >
             <Icons.X size={20} />
           </button>
@@ -93,11 +94,11 @@ export function SearchForm({
           type="submit"
           disabled={!query.trim()}
           variant="primary"
-          className="absolute right-2 top-1/2 -translate-y-1/2 px-8"
+          className="absolute right-2 top-1/2 -translate-y-1/2 px-4 md:px-8"
         >
           <span className="flex items-center gap-2">
             <Icons.Search size={20} />
-            搜索
+            <span className="hidden sm:inline">搜索</span>
           </span>
         </Button>
       </div>

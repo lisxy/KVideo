@@ -14,16 +14,16 @@ interface VideoMetadataProps {
 export function VideoMetadata({ videoData, source, title }: VideoMetadataProps) {
   return (
     <Card hover={false}>
-      <div className="flex items-start gap-4">
+      <div className="flex flex-col sm:flex-row items-start gap-4">
         {videoData?.vod_pic && (
           <img
             src={videoData.vod_pic}
             alt={videoData.vod_name}
-            className="w-32 h-48 object-cover rounded-[var(--radius-2xl)] border border-[var(--glass-border)]"
+            className="w-24 h-36 sm:w-32 sm:h-48 object-cover rounded-[var(--radius-2xl)] border border-[var(--glass-border)]"
           />
         )}
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-[var(--text-color)] mb-3">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[var(--text-color)] mb-3">
             {videoData?.vod_name || title}
           </h1>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -50,18 +50,18 @@ export function VideoMetadata({ videoData, source, title }: VideoMetadataProps) 
             )}
           </div>
           {videoData?.vod_content && (
-            <p className="text-[var(--text-secondary)] line-clamp-3">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] line-clamp-3">
               {videoData.vod_content.replace(/<[^>]*>/g, '')}
             </p>
           )}
           {videoData?.vod_actor && (
-            <p className="text-sm text-[var(--text-tertiary)] mt-2">
+            <p className="text-xs sm:text-sm text-[var(--text-tertiary)] mt-2">
               <span className="font-semibold">主演：</span>
               {videoData.vod_actor}
             </p>
           )}
           {videoData?.vod_director && (
-            <p className="text-sm text-[var(--text-tertiary)] mt-1">
+            <p className="text-xs sm:text-sm text-[var(--text-tertiary)] mt-1">
               <span className="font-semibold">导演：</span>
               {videoData.vod_director}
             </p>

@@ -11,7 +11,7 @@ export function Button({
   className = '', 
   ...props 
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center px-6 py-3 font-semibold text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles = "inline-flex items-center justify-center px-4 py-2.5 md:px-6 md:py-3 font-semibold text-sm md:text-base transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation";
   
   const variants = {
     primary: `
