@@ -46,7 +46,7 @@ const VideoCard = memo(({
       aria-label={`${video.vod_name}${video.vod_remarks ? ` - ${video.vod_remarks}` : ''}`}
     >
       <Card
-        className={`p-0 overflow-hidden group cursor-pointer flex flex-col h-full ${video.isNew ? 'animate-scale-in' : ''}`}
+        className="p-0 overflow-hidden group cursor-pointer flex flex-col h-full"
       >
         {/* Poster */}
         <div className="relative aspect-[2/3] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden rounded-[var(--radius-2xl)]">

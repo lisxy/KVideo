@@ -22,15 +22,20 @@ export function TypeBadgeItem({
   onFocus,
   innerRef,
 }: TypeBadgeItemProps) {
+  const handleClick = () => {
+    // Immediate visual feedback before state update
+    onToggle();
+  };
+
   return (
     <button
       ref={innerRef}
-      onClick={onToggle}
+      onClick={handleClick}
       onFocus={onFocus}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onToggle();
+          handleClick();
         }
       }}
       tabIndex={0}
@@ -40,9 +45,9 @@ export function TypeBadgeItem({
         inline-flex items-center gap-1.5 px-3 py-1.5 
         border border-[var(--glass-border)]
         text-xs font-medium whitespace-nowrap
-        transition-all duration-[var(--transition-fluid)]
+        transition-all duration-200 ease-out
         hover:scale-105 hover:shadow-[var(--shadow-sm)]
-        active:scale-95 snap-start will-change-transform
+        active:scale-95 snap-start
         ${isSelected 
           ? 'bg-[var(--accent-color)] text-white border-[var(--accent-color)]' 
           : 'bg-[var(--glass-bg)] text-[var(--text-color)] backdrop-blur-[10px]'
