@@ -79,6 +79,11 @@ export function SearchForm({
           onFocus={handleInputFocus}
           placeholder="搜索电影、电视剧、综艺..."
           className="text-lg pr-24 md:pr-32 truncate"
+          role="combobox"
+          aria-expanded={showHistory && !isLoading}
+          aria-controls="search-history-listbox"
+          aria-autocomplete="list"
+          aria-label="搜索视频内容"
         />
         {query && (
           <button

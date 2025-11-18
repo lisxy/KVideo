@@ -65,6 +65,9 @@ export function SearchHistoryDropdown({
   return (
     <div
       ref={dropdownRef}
+      id="search-history-listbox"
+      role="listbox"
+      aria-label="搜索历史建议"
       style={style}
       className="z-[9999] bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] border border-[var(--glass-border)] p-2 opacity-0 animate-[slideIn_0.2s_ease-out_forwards]"
     >
@@ -84,6 +87,8 @@ export function SearchHistoryDropdown({
         {searchHistory.map((item) => (
           <div
             key={item.timestamp}
+            role="option"
+            aria-selected="false"
             className="group flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-2xl)] hover:bg-[color-mix(in_srgb,var(--accent-color)_15%,transparent)] transition-all cursor-pointer"
           >
             <Icons.Clock 

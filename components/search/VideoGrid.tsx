@@ -49,7 +49,11 @@ export function VideoGrid({ videos, className = '' }: VideoGridProps) {
   };
 
   return (
-    <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 md:gap-4 lg:gap-6 ${className}`}>
+    <div 
+      className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 md:gap-4 lg:gap-6 ${className}`}
+      role="list"
+      aria-label="视频搜索结果"
+    >
       {videos.map((video, index) => {
         const videoUrl = `/player?${new URLSearchParams({
           id: video.vod_id,
@@ -65,6 +69,7 @@ export function VideoGrid({ videos, className = '' }: VideoGridProps) {
             key={cardId}
             href={videoUrl}
             onClick={(e) => handleCardClick(e, cardId, videoUrl)}
+            role="listitem"
           >
             <Card
               className={`p-0 overflow-hidden group cursor-pointer flex flex-col h-full ${video.isNew ? 'animate-scale-in' : ''}`}

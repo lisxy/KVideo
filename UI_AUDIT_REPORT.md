@@ -600,25 +600,25 @@ export const announceToScreenReader = (message: string) => {
 ### 🟡 High Priority (高优先级，2 周内完成)
 
 #### 5. **完善 ARIA 属性** (预计 3 小时)
-- [ ] **SearchForm.tsx**
-  - [ ] 添加 `role="combobox"`
-  - [ ] 添加 `aria-expanded={showHistory}`
-  - [ ] 添加 `aria-controls="search-history-listbox"`
-  - [ ] 添加 `aria-autocomplete="list"`
+- [✅] **SearchForm.tsx**
+  - [✅] 添加 `role="combobox"`
+  - [✅] 添加 `aria-expanded={showHistory}`
+  - [✅] 添加 `aria-controls="search-history-listbox"`
+  - [✅] 添加 `aria-autocomplete="list"`
 
-- [ ] **WatchHistorySidebar.tsx**
-  - [ ] 添加 `role="complementary"`
-  - [ ] 添加 `aria-labelledby="history-sidebar-title"`
-  - [ ] 添加 `aria-hidden={!isOpen}`
-  - [ ] 实现焦点陷阱 (focus trap)
+- [✅] **WatchHistorySidebar.tsx**
+  - [✅] 添加 `role="complementary"`
+  - [✅] 添加 `aria-labelledby="history-sidebar-title"`
+  - [✅] 添加 `aria-hidden={!isOpen}`
+  - [✅] 实现焦点陷阱 (focus trap)
 
-- [ ] **VideoPlayer.tsx**
-  - [ ] 错误提示添加 `role="alert"`
-  - [ ] 添加 `aria-live="assertive"`
+- [✅] **VideoPlayer.tsx**
+  - [✅] 错误提示添加 `role="alert"`
+  - [✅] 添加 `aria-live="assertive"`
 
-- [ ] **VideoGrid.tsx**
-  - [ ] 添加 `role="list"` 到网格容器
-  - [ ] 添加 `role="listitem"` 到每个卡片
+- [✅] **VideoGrid.tsx**
+  - [✅] 添加 `role="list"` 到网格容器
+  - [✅] 添加 `role="listitem"` 到每个卡片
 
 #### 6. **添加键盘导航支持** (预计 4 小时)
 - [ ] **VideoGrid.tsx**

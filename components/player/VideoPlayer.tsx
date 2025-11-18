@@ -74,7 +74,12 @@ export function VideoPlayer({ playUrl, videoId, currentEpisode, onBack }: VideoP
     <Card hover={false} className="p-0 overflow-hidden">
       {videoError ? (
         <div className="aspect-video bg-black rounded-[var(--radius-2xl)] flex items-center justify-center">
-          <div className="text-center text-white max-w-md px-4">
+          <div 
+            className="text-center text-white max-w-md px-4"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
             <Icons.AlertTriangle size={48} className="mx-auto mb-4 text-red-500" />
             <p className="text-lg font-semibold mb-2">播放失败</p>
             <p className="text-sm text-gray-300 mb-4">{videoError}</p>

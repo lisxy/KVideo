@@ -5,16 +5,50 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useHistoryStore } from '@/lib/store/history-store';
 import { Icons } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { HistoryItem } from './HistoryItem';
 import { HistoryEmptyState } from './HistoryEmptyState';
+import { trapFocus } from '@/lib/accessibility/focus-trap';
 
 export function WatchHistorySidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const { viewingHistory, removeFromHistory, clearHistory } = useHistoryStore();
+  const sidebarRef = useRef<HTMLElement>(null);
+  const cleanupFocusTrapRef = useRef<(() => void) | null>(null);
+
+  // Setup focus trap when sidebar opens
+  useEffect(() => {
+    if (isOpen && sidebarRef.current) {
+      cleanupFocusTrapRef.current = trapFocus(sidebarRef.current);
+    }
+
+    return () => {
+      if (cleanupFocusTrapRef.current) {
+        cleanupFocusTrapRef.current();
+        cleanupFocusTrapRef.current = null;
+      }
+    };
+  }, [isOpen]);
+
+  // Handle escape key to close sidebar
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -37,6 +71,10 @@ export function WatchHistorySidebar() {
 
       {/* Sidebar */}
       <aside
+        ref={sidebarRef}
+        role="complementary"
+        aria-labelledby="history-sidebar-title"
+        aria-hidden={!isOpen}
         className={`fixed top-0 right-0 bottom-0 w-[90%] max-w-[420px] z-[2000] bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] border-l border-[var(--glass-border)] rounded-tl-[var(--radius-2xl)] rounded-bl-[var(--radius-2xl)] p-6 flex flex-col shadow-[0_8px_32px_rgba(0,0,0,0.2)] transition-transform duration-[400ms] cubic-bezier(0.2,0.8,0.2,1) ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
@@ -45,7 +83,10 @@ export function WatchHistorySidebar() {
         <header className="flex items-center justify-between mb-6 pb-4 border-b border-[var(--glass-border)]">
           <div className="flex items-center gap-3">
             <Icons.History size={24} className="text-[var(--accent-color)]" />
-            <h2 className="text-xl font-semibold text-[var(--text-color)]">
+            <h2 
+              id="history-sidebar-title"
+              className="text-xl font-semibold text-[var(--text-color)]"
+            >
               观看历史
             </h2>
           </div>
