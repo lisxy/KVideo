@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Icons } from '@/components/ui/Icon';
 import { SearchLoadingAnimation } from '@/components/SearchLoadingAnimation';
+import { SearchHistoryDropdown } from '@/components/search/SearchHistoryDropdown';
+import { useSearchHistory } from '@/lib/hooks/useSearchHistory';
 
 interface SearchFormProps {
   onSearch: (query: string) => void;
@@ -28,6 +30,24 @@ export function SearchForm({
   const [query, setQuery] = useState(initialQuery);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Search history hook
+  const {
+    searchHistory,
+    isDropdownOpen,
+    highlightedIndex,
+    showDropdown,
+    hideDropdown,
+    addSearch,
+    removeSearch,
+    clearAll,
+    selectHistoryItem,
+    navigateDropdown,
+    resetHighlight,
+  } = useSearchHistory((selectedQuery) => {
+    setQuery(selectedQuery);
+    onSearch(selectedQuery);
+  });
+
   // Update query when initialQuery changes
   useEffect(() => {
     setQuery(initialQuery);
@@ -36,7 +56,10 @@ export function SearchForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (query.trim() && !isLoading) {
+      // Add to search history before searching
+      addSearch(query.trim());
       onSearch(query);
+      hideDropdown();
     }
   };
 
@@ -44,6 +67,42 @@ export function SearchForm({
     setQuery('');
     if (onClear) {
       onClear();
+    }
+    resetHighlight();
+  };
+
+  const handleInputFocus = () => {
+    if (query.trim() === '') {
+      showDropdown();
+    }
+  };
+
+  const handleInputBlur = () => {
+    hideDropdown();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isDropdownOpen) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        navigateDropdown('down');
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        navigateDropdown('up');
+        break;
+      case 'Enter':
+        if (highlightedIndex >= 0 && searchHistory[highlightedIndex]) {
+          e.preventDefault();
+          selectHistoryItem(searchHistory[highlightedIndex].query);
+        }
+        break;
+      case 'Escape':
+        hideDropdown();
+        inputRef.current?.blur();
+        break;
     }
   };
 
@@ -55,9 +114,15 @@ export function SearchForm({
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+          onKeyDown={handleKeyDown}
           placeholder="搜索电影、电视剧、综艺..."
           className="text-base sm:text-lg pr-24 md:pr-32 truncate"
           aria-label="搜索视频内容"
+          aria-expanded={isDropdownOpen}
+          aria-controls="search-history-dropdown"
+          aria-autocomplete="list"
         />
         {query && (
           <button
@@ -80,6 +145,17 @@ export function SearchForm({
             <span className="hidden sm:inline">搜索</span>
           </span>
         </Button>
+
+        {/* Search History Dropdown */}
+        <SearchHistoryDropdown
+          isOpen={isDropdownOpen}
+          searchHistory={searchHistory}
+          highlightedIndex={highlightedIndex}
+          triggerRef={inputRef}
+          onSelectItem={selectHistoryItem}
+          onRemoveItem={removeSearch}
+          onClearAll={clearAll}
+        />
       </div>
       
       {/* Loading Animation */}

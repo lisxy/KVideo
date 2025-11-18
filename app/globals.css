@@ -574,5 +574,219 @@ nav {
   contain: layout style;
 }
 
+/* ===========================================
+   SEARCH HISTORY DROPDOWN - LIQUID GLASS
+   =========================================== */
+
+/* Search History Dropdown - Fixed positioning, Liquid Glass effect */
+.search-history-dropdown {
+  position: fixed;
+  z-index: 9999;
+  overflow-y: auto;
+  
+  /* Liquid Glass effect - Core aesthetic */
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  
+  /* Rounded-2xl corners - Universal softness */
+  border-radius: var(--radius-2xl);
+  
+  /* Depth and definition */
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--glass-border);
+  
+  /* Content padding */
+  padding: 0.75rem;
+  
+  /* Smooth appearance animation */
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  animation: search-dropdown-appear 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  
+  /* Transform origin for natural scaling */
+  transform-origin: top center;
+  
+  /* Prevent text selection during interaction */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@keyframes search-dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header section */
+.search-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Divider with glass effect subtlety */
+.search-history-divider {
+  height: 1px;
+  width: 100%;
+  background: var(--glass-border);
+  margin: 0.5rem 0;
+}
+
+/* List container */
+.search-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Individual history item */
+.search-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  
+  /* Universal rounded-2xl for container elements */
+  border-radius: var(--radius-2xl);
+  
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  
+  /* Fluid animation - Physics-based transitions */
+  transition: all var(--transition-fluid);
+  
+  /* Subtle background for hover/highlight */
+  background: transparent;
+}
+
+/* Hover state - Light interaction */
+.search-history-item:hover {
+  background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+  transform: translateX(2px);
+}
+
+/* Highlighted state - Keyboard navigation */
+.search-history-item.highlighted {
+  background: color-mix(in srgb, var(--accent-color) 15%, transparent);
+  transform: translateX(4px);
+  
+  /* Subtle inner-glow effect - Lensing principle */
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
+}
+
+/* Remove button */
+.search-history-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Rounded-full for small circular elements */
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  
+  background: transparent;
+  border: none;
+  color: var(--text-color-secondary);
+  
+  cursor: pointer;
+  flex-shrink: 0;
+  
+  /* Fluid animation */
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  
+  /* Prevent triggering parent hover */
+  z-index: 1;
+}
+
+.search-history-remove:hover {
+  background: color-mix(in srgb, var(--text-color-secondary) 20%, transparent);
+  color: var(--text-color);
+  transform: scale(1.1);
+}
+
+.search-history-remove:active {
+  transform: scale(0.95);
+}
+
+/* Optimize scrolling performance */
+.search-history-dropdown {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for dropdown */
+.search-history-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-history-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search-history-dropdown::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--glass-bg) 80%, transparent);
+  border-radius: var(--radius-full);
+}
+
+.search-history-dropdown::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent-color) 50%, transparent);
+}
+
+/* Accessibility - Focus visible states */
+.search-history-item:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+.search-history-remove:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 1px;
+  border-radius: var(--radius-full);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .search-history-dropdown {
+    /* Increase touch target sizes */
+    padding: 0.5rem;
+  }
+  
+  .search-history-item {
+    padding: 1rem 0.75rem;
+    /* Larger minimum touch target */
+    min-height: 48px;
+  }
+  
+  .search-history-remove {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Dark mode enhancements */
+body.dark .search-history-dropdown,
+.dark .search-history-dropdown {
+  /* Enhanced glass effect in dark mode */
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  
+  /* Stronger shadow for depth */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ===========================================
+   END SEARCH HISTORY DROPDOWN
+   =========================================== */
+
 
 
