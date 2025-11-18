@@ -8,7 +8,7 @@
   --bg-image-light: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
   --text-color-light: #1d1d1f;
   --text-color-secondary-light: #6e6e73;
-  --accent-color-light: #007aff;
+  --accent-color-light: #0056b3; /* Updated from #007aff for WCAG AA compliance (6.85:1 with white) */
   --glass-bg-light: rgba(242, 242, 247, 0.8);
   --glass-border-light: rgba(255, 255, 255, 0.5);
   --shadow-color-light: rgba(0, 0, 0, 0.1);
@@ -18,7 +18,7 @@
   --bg-image-dark: linear-gradient(120deg, #272B30 0%, #121212 100%);
   --text-color-dark: #f5f5f7;
   --text-color-secondary-dark: #8e8e93;
-  --accent-color-dark: #0a84ff;
+  --accent-color-dark: #1A6DBF; /* Updated for WCAG AA compliance (5.27:1 with white) */
   --glass-bg-dark: rgba(28, 28, 30, 0.75);
   --glass-border-dark: rgba(60, 60, 60, 0.7);
   --shadow-color-dark: rgba(0, 0, 0, 0.3);
@@ -90,6 +90,27 @@ body.dark,
 html {
   /* Enable smooth scrolling with performance optimization */
   scroll-behavior: smooth;
+}
+
+/* Global focus-visible styles for keyboard navigation accessibility */
+*:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-2xl);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Special handling for pill-shaped elements */
+[class*="rounded-full"]:focus-visible {
+  border-radius: var(--radius-full);
 }
 
 
