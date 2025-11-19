@@ -3,13 +3,14 @@
 
 :root {
   --font-family-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-  
+
   /* Light Mode Palette */
   --bg-color-light: #f0f2f5;
   --bg-image-light: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
   --text-color-light: #1d1d1f;
   --text-color-secondary-light: #6e6e73;
-  --accent-color-light: #0056b3; /* Updated from #007aff for WCAG AA compliance (6.85:1 with white) */
+  --accent-color-light: #0056b3;
+  /* Updated from #007aff for WCAG AA compliance (6.85:1 with white) */
   --glass-bg-light: rgba(242, 242, 247, 0.8);
   --glass-border-light: rgba(255, 255, 255, 0.5);
   --shadow-color-light: rgba(0, 0, 0, 0.1);
@@ -19,18 +20,19 @@
   --bg-image-dark: linear-gradient(120deg, #272B30 0%, #121212 100%);
   --text-color-dark: #f5f5f7;
   --text-color-secondary-dark: #8e8e93;
-  --accent-color-dark: #1A6DBF; /* Updated for WCAG AA compliance (5.27:1 with white) */
+  --accent-color-dark: #1A6DBF;
+  /* Updated for WCAG AA compliance (5.27:1 with white) */
   --glass-bg-dark: rgba(28, 28, 30, 0.75);
   --glass-border-dark: rgba(60, 60, 60, 0.7);
   --shadow-color-dark: rgba(0, 0, 0, 0.3);
 
   /* Universal Variables */
-  --radius-2xl: 1.5rem; 
+  --radius-2xl: 1.5rem;
   --radius-full: 9999px;
   --shadow-sm: 0 2px 4px var(--shadow-color);
   --shadow-md: 0 4px 12px var(--shadow-color);
   --transition-fluid: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  
+
   /* Active Theme Variables */
   --bg-color: var(--bg-color-light);
   --bg-image: var(--bg-image-light);
@@ -40,7 +42,7 @@
   --glass-bg: var(--glass-bg-light);
   --glass-border: var(--glass-border-light);
   --shadow-color: var(--shadow-color-light);
-  
+
   --background: #f0f2f5;
   --foreground: #1d1d1f;
 }
@@ -54,12 +56,12 @@ body {
   --glass-bg: var(--glass-bg-light);
   --glass-border: var(--glass-border-light);
   --shadow-color: var(--shadow-color-light);
-  
+
   background-color: var(--bg-color);
   background-image: var(--bg-image);
   color: var(--text-color);
   font-family: var(--font-family-system);
-  
+
   /* Optimize scrolling performance */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: none;
@@ -75,12 +77,14 @@ body.dark,
   --glass-bg: var(--glass-bg-dark);
   --glass-border: var(--glass-border-dark);
   --shadow-color: var(--shadow-color-dark);
-  
+
   --background: #121212;
   --foreground: #f5f5f7;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   /* Optimize font rendering */
   -webkit-font-smoothing: antialiased;
@@ -164,6 +168,7 @@ select:focus-visible {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -175,6 +180,7 @@ select:focus-visible {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -182,9 +188,12 @@ select:focus-visible {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -197,23 +206,45 @@ select:focus-visible {
 }
 
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes spin-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 @keyframes bounce-subtle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes scale-in {
@@ -221,6 +252,7 @@ select:focus-visible {
     opacity: 0;
     transform: scale(0.9) translateY(10px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -232,6 +264,7 @@ select:focus-visible {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+
   100% {
     opacity: 0;
     transform: scale(0.9) translateY(-10px);
@@ -239,10 +272,13 @@ select:focus-visible {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) translateX(0);
     opacity: 0.3;
   }
+
   50% {
     transform: translateY(-20px) translateX(10px);
     opacity: 0.8;
@@ -250,11 +286,14 @@ select:focus-visible {
 }
 
 @keyframes gradient-x {
-  0%, 100% { 
-    background-position: 0% 50%; 
+
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-  50% { 
-    background-position: 100% 50%; 
+
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -309,9 +348,14 @@ select:focus-visible {
 
 /* Liquid Glass Components */
 .glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  /* background: var(--glass-bg); */
+  /* Performance fix: Use solid color with opacity instead of blur */
+  background: var(--bg-color);
+  opacity: 0.95;
+
+  /* backdrop-filter: blur(8px) saturate(120%); */
+  /* -webkit-backdrop-filter: blur(8px) saturate(120%); */
+
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--glass-border);
@@ -333,8 +377,9 @@ nav:where(.sticky, .fixed),
 
 .glass-input {
   background: var(--glass-bg);
-  backdrop-filter: blur(8px) saturate(120%);
-  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  /* Performance fix: Disable blur */
+  /* backdrop-filter: blur(6px) saturate(120%); */
+  /* -webkit-backdrop-filter: blur(6px) saturate(120%); */
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-2xl);
   color: var(--text-color);
@@ -388,6 +433,7 @@ nav:where(.sticky, .fixed),
     opacity: 0;
     transform: translateY(-10px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -398,6 +444,7 @@ nav:where(.sticky, .fixed),
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -407,6 +454,7 @@ nav:where(.sticky, .fixed),
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -508,12 +556,15 @@ nav:where(.sticky, .fixed),
 
 /* Hide scrollbar utility */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari and Opera */
+  display: none;
+  /* Chrome, Safari and Opera */
 }
 
 /* Toast slide-up animation */
@@ -522,6 +573,7 @@ nav:where(.sticky, .fixed),
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -534,14 +586,14 @@ nav:where(.sticky, .fixed),
 
 /* Performance optimizations for scrolling */
 /* Apply CSS containment to grid items for better scroll performance */
-[class*="grid"] > * {
+[class*="grid"]>* {
   content-visibility: auto;
   contain-intrinsic-size: auto 400px;
   contain: layout style paint;
 }
 
 /* Smooth video grid transitions */
-[class*="grid"] > a {
+[class*="grid"]>a {
   animation: fadeInUp 0.2s ease-out;
 }
 
@@ -550,6 +602,7 @@ nav:where(.sticky, .fixed),
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -590,30 +643,30 @@ nav {
   /* Removed position: fixed - now using absolute from component */
   max-height: 400px;
   overflow-y: auto;
-  
+
   /* Liquid Glass effect - Core aesthetic */
   background: var(--glass-bg);
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
-  
+
   /* Rounded-2xl corners - Universal softness */
   border-radius: var(--radius-2xl);
-  
+
   /* Depth and definition */
   box-shadow: var(--shadow-md);
   border: 1px solid var(--glass-border);
-  
+
   /* Content padding */
   padding: 0.75rem;
-  
+
   /* Smooth appearance animation */
   opacity: 0;
   transform: translateY(-10px) scale(0.95);
   animation: search-dropdown-appear 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  
+
   /* Transform origin for natural scaling */
   transform-origin: top center;
-  
+
   /* Prevent text selection during interaction */
   user-select: none;
   -webkit-user-select: none;
@@ -624,6 +677,7 @@ nav {
     opacity: 0;
     transform: translateY(-10px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -660,16 +714,16 @@ nav {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  
+
   /* Universal rounded-2xl for container elements */
   border-radius: var(--radius-2xl);
-  
+
   padding: 0.75rem 1rem;
   cursor: pointer;
-  
+
   /* Fluid animation - Physics-based transitions */
   transition: all var(--transition-fluid);
-  
+
   /* Subtle background for hover/highlight */
   background: transparent;
 }
@@ -684,7 +738,7 @@ nav {
 .search-history-item.highlighted {
   background: color-mix(in srgb, var(--accent-color) 15%, transparent);
   transform: translateX(4px);
-  
+
   /* Subtle inner-glow effect - Lensing principle */
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
@@ -694,22 +748,22 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   /* Rounded-full for small circular elements */
   width: 24px;
   height: 24px;
   border-radius: var(--radius-full);
-  
+
   background: transparent;
   border: none;
   color: var(--text-color-secondary);
-  
+
   cursor: pointer;
   flex-shrink: 0;
-  
+
   /* Fluid animation */
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-  
+
   /* Prevent triggering parent hover */
   z-index: 1;
 }
@@ -777,13 +831,13 @@ nav {
     /* Increase touch target sizes */
     padding: 0.5rem;
   }
-  
+
   .search-history-item {
     padding: 1rem 0.75rem;
     /* Larger minimum touch target */
     min-height: 48px;
   }
-  
+
   .search-history-remove {
     width: 32px;
     height: 32px;
@@ -796,7 +850,7 @@ body.dark .search-history-dropdown,
   /* Enhanced glass effect in dark mode */
   backdrop-filter: blur(30px) saturate(200%);
   -webkit-backdrop-filter: blur(30px) saturate(200%);
-  
+
   /* Stronger shadow for depth */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
@@ -804,6 +858,3 @@ body.dark .search-history-dropdown,
 /* ===========================================
    END SEARCH HISTORY DROPDOWN
    =========================================== */
-
-
-

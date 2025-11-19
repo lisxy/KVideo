@@ -85,14 +85,14 @@ export default function SettingsPage() {
             className="inline-flex items-center gap-2 text-[var(--accent-color)] hover:underline mb-4"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
+              <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             返回上一页
           </button>
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 flex items-center justify-center rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)]">
+            <div className="w-12 h-12 flex items-center justify-center rounded-[var(--radius-2xl)] bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)]">
               <svg className="w-6 h-6 text-[var(--text-color)]" viewBox="0 -960 960 960" fill="currentColor">
-                <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/>
+                <path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z" />
               </svg>
             </div>
             <div>
@@ -103,7 +103,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Source Management */}
-        <div className="bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6 mb-6">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-[var(--text-color)]">视频源管理</h2>
             <div className="flex gap-2">
@@ -124,9 +124,9 @@ export default function SettingsPage() {
           <p className="text-sm text-[var(--text-color-secondary)] mb-6">
             管理视频来源，调整优先级和启用状态
           </p>
-          <SourceManager 
-            sources={showAllSources ? sources : sources.slice(0, 10)} 
-            onSourcesChange={handleSourcesChange} 
+          <SourceManager
+            sources={showAllSources ? sources : sources.slice(0, 10)}
+            onSourcesChange={handleSourcesChange}
           />
           {sources.length > 10 && (
             <button
@@ -139,7 +139,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Sort Options */}
-        <div className="bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6 mb-6">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6 mb-6">
           <h2 className="text-xl font-semibold text-[var(--text-color)] mb-4">搜索结果排序</h2>
           <p className="text-sm text-[var(--text-color-secondary)] mb-4">
             选择搜索结果的默认排序方式
@@ -149,11 +149,10 @@ export default function SettingsPage() {
               <button
                 key={option}
                 onClick={() => handleSortChange(option)}
-                className={`px-4 py-3 rounded-[var(--radius-2xl)] border text-left font-medium transition-all duration-200 ${
-                  sortBy === option
-                    ? 'bg-[var(--accent-color)] border-[var(--accent-color)] text-white'
-                    : 'bg-[var(--glass-bg)] border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)]'
-                }`}
+                className={`px-4 py-3 rounded-[var(--radius-2xl)] border text-left font-medium transition-all duration-200 ${sortBy === option
+                  ? 'bg-[var(--accent-color)] border-[var(--accent-color)] text-white'
+                  : 'bg-[var(--glass-bg)] border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)]'
+                  }`}
               >
                 {sortOptions[option]}
               </button>
@@ -162,7 +161,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Data Management */}
-        <div className="bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6">
+        <div className="bg-[var(--glass-bg)] backdrop-blur-md border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-md)] p-6">
           <h2 className="text-xl font-semibold text-[var(--text-color)] mb-4">数据管理</h2>
           <div className="space-y-3">
             <button
@@ -171,7 +170,7 @@ export default function SettingsPage() {
             >
               <span>导出设置</span>
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
               </svg>
             </button>
 
@@ -181,7 +180,7 @@ export default function SettingsPage() {
             >
               <span>导入设置</span>
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
               </svg>
             </button>
 
@@ -191,7 +190,7 @@ export default function SettingsPage() {
             >
               <span>清除所有数据</span>
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
               </svg>
             </button>
           </div>

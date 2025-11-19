@@ -35,7 +35,7 @@ export function HistoryItem({
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    
+
     if (hours > 0) {
       return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
@@ -47,11 +47,11 @@ export function HistoryItem({
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+
     if (days === 0) return '今天';
     if (days === 1) return '昨天';
     if (days < 7) return `${days}天前`;
-    
+
     return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
   };
 
@@ -75,7 +75,7 @@ export function HistoryItem({
   };
 
   const progress = (playbackPosition / duration) * 100;
-  const episodeText = episodes && episodes.length > 0 
+  const episodeText = episodes && episodes.length > 0
     ? episodes[episodeIndex]?.name || `第${episodeIndex + 1}集`
     : '';
 
@@ -102,6 +102,7 @@ export function HistoryItem({
                 alt={title}
                 fill
                 className="object-cover"
+                sizes="112px"
                 onError={(e) => {
                   const target = e.currentTarget as HTMLImageElement;
                   target.style.display = 'none';

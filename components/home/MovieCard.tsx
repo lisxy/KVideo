@@ -32,7 +32,7 @@ export const MovieCard = memo(function MovieCard({ movie, onMovieClick }: MovieC
       }}
       className="group cursor-pointer"
     >
-      <Card hover className="overflow-hidden p-0 h-full">
+      <Card hover className="overflow-hidden p-0 h-full" blur={false}>
         <div className="relative aspect-[2/3] overflow-hidden bg-[var(--glass-bg)] rounded-[var(--radius-2xl)]">
           <Image
             src={movie.cover}
@@ -55,7 +55,7 @@ export const MovieCard = memo(function MovieCard({ movie, onMovieClick }: MovieC
             }}
           />
           {movie.rate && parseFloat(movie.rate) > 0 && (
-            <div 
+            <div
               className="absolute top-2 right-2 bg-black/80 px-2.5 py-1.5 flex items-center gap-1.5 rounded-[var(--radius-full)]"
             >
               <Icons.Star size={12} className="text-yellow-400 fill-yellow-400" />
