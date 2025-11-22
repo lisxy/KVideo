@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
     try {
         // Beijing IP address to simulate request from China
-        const chinaIP = '113.204.79.230';
+        const chinaIP = '202.108.22.5';
 
         const response = await fetch(url, {
             headers: {
