@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 export async function GET(request: NextRequest) {
     const url = request.nextUrl.searchParams.get('url');
@@ -11,6 +12,10 @@ export async function GET(request: NextRequest) {
         // Beijing IP address to simulate request from China
         const chinaIP = '202.108.22.5';
 
+        // Configure proxy agent if environment variable is set
+        const proxyUrl = process.env.CHINA_PROXY_URL;
+        const agent = proxyUrl ? new HttpsProxyAgent(proxyUrl) : undefined;
+
         const response = await fetch(url, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -18,6 +23,8 @@ export async function GET(request: NextRequest) {
                 'Client-IP': chinaIP,
                 'Referer': new URL(url).origin,
             },
+            // @ts-ignore - node-fetch types don't perfectly match Next.js fetch extension
+            agent: agent,
         });
 
         const contentType = response.headers.get('Content-Type');
