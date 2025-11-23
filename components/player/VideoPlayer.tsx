@@ -18,7 +18,7 @@ interface VideoPlayerProps {
 export function VideoPlayer({ playUrl, videoId, currentEpisode, onBack }: VideoPlayerProps) {
   const [videoError, setVideoError] = useState<string>('');
   const [useProxy, setUseProxy] = useState(false);
-  const [shouldAutoPlay, setShouldAutoPlay] = useState(false);
+  const [shouldAutoPlay, setShouldAutoPlay] = useState(true);
   // Use reactive hook to subscribe to history updates
   // This ensures the component re-renders when history is hydrated from localStorage
   const viewingHistory = useHistoryStore(state => state.viewingHistory);
