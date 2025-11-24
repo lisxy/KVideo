@@ -33,9 +33,7 @@ export function SearchBox({ onSearch, onClear, initialQuery = '' }: SearchBoxPro
         setQuery(selectedQuery);
         onSearch(selectedQuery);
         // Blur the input after selecting from history
-        setTimeout(() => {
-            inputRef.current?.blur();
-        }, 100);
+        inputRef.current?.blur();
     });
 
     // Update query when initialQuery changes

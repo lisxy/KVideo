@@ -66,7 +66,7 @@ export function useHomePage() {
                 setHasSearched(true);
                 loadCachedResults(cached.results, cached.availableSources);
             } else {
-                setTimeout(() => handleSearch(urlQuery), 100);
+                handleSearch(urlQuery);
             }
         }
     }, [searchParams, loadFromCache, loadCachedResults]);

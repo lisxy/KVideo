@@ -5,7 +5,7 @@
 
 const REQUEST_TIMEOUT = 15000;
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000;
+const RETRY_DELAY = 200;
 
 /**
  * Fetch with timeout support

@@ -39,8 +39,8 @@ export async function GET(request: NextRequest) {
                 if (response.status === 503 && attempt < MAX_RETRIES) {
                     console.warn(`⚠ Got 503 on attempt ${attempt}, retrying... (${url})`);
                     lastError = `503 on attempt ${attempt}`;
-                    // Wait 500ms before retry
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    // Wait 100ms before retry
+                    await new Promise(resolve => setTimeout(resolve, 100));
                     continue;
                 }
 
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
                 lastError = fetchError;
                 if (attempt < MAX_RETRIES) {
                     console.warn(`⚠ Fetch error on attempt ${attempt}, retrying...`, fetchError);
-                    await new Promise(resolve => setTimeout(resolve, 500));
+                    await new Promise(resolve => setTimeout(resolve, 100));
                 } else {
                     throw fetchError;
                 }
