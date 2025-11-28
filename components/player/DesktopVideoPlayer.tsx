@@ -3,6 +3,7 @@
 import { useDesktopPlayerState } from './hooks/useDesktopPlayerState';
 import { useDesktopPlayerLogic } from './hooks/useDesktopPlayerLogic';
 import { useHLSPreloader } from './hooks/useHLSPreloader';
+import { useHlsPlayer } from './hooks/useHlsPlayer';
 import { DesktopControlsWrapper } from './desktop/DesktopControlsWrapper';
 import { DesktopOverlayWrapper } from './desktop/DesktopOverlayWrapper';
 
@@ -28,6 +29,13 @@ export function DesktopVideoPlayer({
 
   // Preload HLS segments
   useHLSPreloader({ src, currentTime, videoRef: refs.videoRef, isLoading: state.isLoading });
+
+  // Initialize HLS Player
+  useHlsPlayer({
+    videoRef: refs.videoRef,
+    src,
+    autoPlay: shouldAutoPlay
+  });
 
   const {
     videoRef,
@@ -71,7 +79,6 @@ export function DesktopVideoPlayer({
       <video
         ref={videoRef}
         className="w-full h-full object-contain"
-        src={src}
         poster={poster}
         x-webkit-airplay="allow"
         onPlay={handlePlay}
