@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  output: 'standalone',
+
   images: {
     remotePatterns: [
       // Douban images

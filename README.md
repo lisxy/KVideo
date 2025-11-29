@@ -521,6 +521,57 @@ npm run build
 # 输出到 out/ 目录
 ```
 
+### 🐳 Docker 部署
+
+#### 1. 获取代码
+
+```bash
+git clone https://github.com/KuekHaoYang/KVideo.git
+cd KVideo
+```
+
+#### 2. 构建镜像
+
+```bash
+docker build -t kvideo .
+```
+
+#### 3. 运行容器
+
+```bash
+docker-compose up -d
+```
+
+应用将在 `http://localhost:3000` 启动。
+
+#### 3. 使用 Docker Hub 安装
+
+如果你不想自己构建镜像，可以直接从 Docker Hub 拉取：
+
+```bash
+# 拉取镜像
+docker pull kuekhaoyang/kvideo:latest
+
+# 运行容器
+docker run -d -p 3000:3000 --name kvideo kuekhaoyang/kvideo:latest
+```
+
+#### 4. 如何更新镜像
+
+当有新版本发布时，可以通过以下命令更新：
+
+```bash
+# 1. 停止并删除旧容器
+docker stop kvideo
+docker rm kvideo
+
+# 2. 拉取最新镜像
+docker pull kuekhaoyang/kvideo:latest
+
+# 3. 重新运行容器
+docker run -d -p 3000:3000 --name kvideo kuekhaoyang/kvideo:latest
+```
+
 ## 🤝 贡献
 
 我们非常欢迎各种形式的贡献！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详细的贡献指南。
