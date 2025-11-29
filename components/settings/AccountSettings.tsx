@@ -24,15 +24,28 @@ export function AccountSettings() {
         const token = searchParams.get('token');
         const userStr = searchParams.get('user');
 
+        console.log('[AccountSettings] Checking URL params:', {
+            authSuccess,
+            hasToken: !!token,
+            hasUser: !!userStr,
+        });
+
         if (authSuccess && token && userStr) {
             try {
                 const userData = JSON.parse(userStr) as LinuxDoUser;
+                console.log('[AccountSettings] Parsed user data:', {
+                    id: userData.id,
+                    username: userData.username,
+                });
+
                 clearHistory();
                 clearSearchHistory();
                 login(userData, token);
+
+                console.log('[AccountSettings] Login complete, redirecting...');
                 router.replace('/settings');
             } catch (e) {
-                console.error('Failed to parse user data', e);
+                console.error('[AccountSettings] Failed to parse user data:', e);
             }
         }
     }, [searchParams, login, clearHistory, clearSearchHistory, router]);
