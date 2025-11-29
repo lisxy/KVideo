@@ -31,28 +31,54 @@ export function useGoogleDrive() {
 
         const initClient = async () => {
             try {
+                console.log('[Google Drive] Starting initialization...');
+                console.log('[Google Drive] Client ID:', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? 'Present' : 'Missing');
+
+                if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+                    throw new Error('Missing Google Client ID');
+                }
+
                 // Dynamically load gapi script
+                console.log('[Google Drive] Loading gapi script...');
                 if (!window.gapi) {
                     await new Promise<void>((resolve, reject) => {
                         const script = document.createElement('script');
                         script.src = 'https://apis.google.com/js/api.js';
-                        script.onload = () => resolve();
-                        script.onerror = () => reject(new Error('Failed to load gapi script'));
+                        script.onload = () => {
+                            console.log('[Google Drive] gapi script loaded');
+                            resolve();
+                        };
+                        script.onerror = (e) => {
+                            console.error('[Google Drive] Failed to load gapi script', e);
+                            reject(new Error('Failed to load Google API script'));
+                        };
                         document.body.appendChild(script);
                     });
                 }
 
-                await new Promise<void>((resolve) => {
-                    gapi.load('client:auth2', () => {
-                        resolve();
+                console.log('[Google Drive] Loading client:auth2...');
+                await new Promise<void>((resolve, reject) => {
+                    gapi.load('client:auth2', {
+                        callback: () => {
+                            console.log('[Google Drive] client:auth2 loaded');
+                            resolve();
+                        },
+                        onerror: (err: any) => {
+                            console.error('[Google Drive] Failed to load client:auth2', err);
+                            reject(new Error('Failed to load Google client libraries'));
+                        }
                     });
                 });
 
+                console.log('[Google Drive] Initializing client...');
                 await gapi.client.init({
-                    clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+                    apiKey: '', // No API key needed for OAuth
+                    clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
                     discoveryDocs: DISCOVERY_DOCS,
                     scope: SCOPES,
                 });
+
+                console.log('[Google Drive] Client initialized successfully');
 
                 // Listen for sign-in state changes.
                 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
@@ -60,17 +86,15 @@ export function useGoogleDrive() {
                 // Handle the initial sign-in state.
                 updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
                 setIsInitialized(true);
+                console.log('[Google Drive] Initialization complete');
             } catch (err: any) {
-                console.error('Error initializing Google API client', err);
-                setError(err.message || 'Failed to initialize Google API');
+                console.error('[Google Drive] Error initializing Google API client', err);
+                const errorMessage = err?.message || err?.error || 'Failed to initialize Google API';
+                setError(errorMessage);
             }
         };
 
-        if (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
-            initClient();
-        } else {
-            setError('Missing Google Client ID');
-        }
+        initClient();
     }, []);
 
     const updateSigninStatus = (isSignedIn: boolean) => {
