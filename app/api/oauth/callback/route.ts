@@ -25,14 +25,16 @@ export async function GET(request: NextRequest) {
         console.log('[OAuth Callback] Exchanging code for token...');
         const tokenResponse = await fetch('https://connect.linux.do/oauth2/token', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
                 client_id: CLIENT_ID,
                 client_secret: CLIENT_SECRET,
                 code,
                 redirect_uri: REDIRECT_URI,
                 grant_type: 'authorization_code',
-            }),
+            }).toString(),
         });
 
         const tokenData = await tokenResponse.json();
