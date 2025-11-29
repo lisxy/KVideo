@@ -28,13 +28,26 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+# Debug: Show build environment
+RUN echo "=== Build Environment ===" && \
+  pwd && \
+  echo "=== Files in /app ===" && \
+  ls -la && \
+  echo "=== Lockfiles ===" && \
+  ls -la | grep -E "lock|yarn" || echo "No lockfiles" && \
+  echo "=== Node version ===" && \
+  node --version && \
+  echo "=== NPM version ===" && \
+  npm --version
+
+# Build Next.js application
 RUN set -ex && \
   if [ -f yarn.lock ]; then \
-    echo "Building with Yarn..." && yarn run build; \
+    echo "Building with Yarn..." && yarn run build 2>&1; \
   elif [ -f package-lock.json ]; then \
-    echo "Building with NPM..." && npm run build; \
+    echo "Building with NPM..." && npm run build 2>&1; \
   elif [ -f pnpm-lock.yaml ]; then \
-    echo "Building with PNPM..." && corepack enable pnpm && pnpm run build; \
+    echo "Building with PNPM..." && corepack enable pnpm && pnpm run build 2>&1; \
   else \
     echo "ERROR: Lockfile not found." && exit 1; \
   fi
