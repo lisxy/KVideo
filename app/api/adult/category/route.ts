@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+
+export const runtime = 'edge';
 import { ADULT_SOURCES } from '@/lib/api/adult-sources';
 
 export async function GET(request: Request) {
