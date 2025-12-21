@@ -11,17 +11,45 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [isClient, setIsClient] = useState(false);
+    const [hasEnvPassword, setHasEnvPassword] = useState(false);
+    const [isValidating, setIsValidating] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
+        checkEnvPasswordStatus();
         checkLockStatus();
     }, []);
 
-    const checkLockStatus = () => {
+    const checkEnvPasswordStatus = async () => {
+        try {
+            const res = await fetch('/api/config');
+            const data = await res.json();
+            setHasEnvPassword(data.hasEnvPassword);
+        } catch {
+            // Silently fail - env password not available
+        }
+    };
+
+    const checkLockStatus = async () => {
         const settings = settingsStore.getSettings();
-        if (!settings.passwordAccess) {
-            setIsLocked(false);
-            return;
+
+        // Check if env password is set
+        try {
+            const res = await fetch('/api/config');
+            const data = await res.json();
+            const envPasswordSet = data.hasEnvPassword;
+
+            // Lock if either local or env password is enabled
+            if (!settings.passwordAccess && !envPasswordSet) {
+                setIsLocked(false);
+                return;
+            }
+        } catch {
+            // If API fails, just check local settings
+            if (!settings.passwordAccess) {
+                setIsLocked(false);
+                return;
+            }
         }
 
         const isUnlocked = sessionStorage.getItem(SESSION_UNLOCKED_KEY) === 'true';
@@ -32,20 +60,48 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const handleUnlock = (e: React.FormEvent) => {
+    const handleUnlock = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsValidating(true);
+
         const settings = settingsStore.getSettings();
+
+        // First check local passwords
         if (settings.accessPasswords.includes(password)) {
             sessionStorage.setItem(SESSION_UNLOCKED_KEY, 'true');
             setIsLocked(false);
             setError(false);
-        } else {
-            setError(true);
-            // Shake animation trigger
-            const form = document.getElementById('password-form');
-            form?.classList.add('animate-shake');
-            setTimeout(() => form?.classList.remove('animate-shake'), 500);
+            setIsValidating(false);
+            return;
         }
+
+        // Then check env password via API
+        if (hasEnvPassword) {
+            try {
+                const res = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password }),
+                });
+                const data = await res.json();
+                if (data.valid) {
+                    sessionStorage.setItem(SESSION_UNLOCKED_KEY, 'true');
+                    setIsLocked(false);
+                    setError(false);
+                    setIsValidating(false);
+                    return;
+                }
+            } catch {
+                // API error, proceed to show error
+            }
+        }
+
+        // Password didn't match
+        setError(true);
+        setIsValidating(false);
+        const form = document.getElementById('password-form');
+        form?.classList.add('animate-shake');
+        setTimeout(() => form?.classList.remove('animate-shake'), 500);
     };
 
     if (!isClient) return null; // Prevent hydration mismatch

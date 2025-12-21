@@ -7,6 +7,19 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Global Pointer Cursor for Interactive Elements */
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"],
+a[href],
+label[for],
+select,
+.cursor-pointer {
+    cursor: pointer;
+}
+
 html {
     scroll-behavior: auto;
 }

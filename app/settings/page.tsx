@@ -18,6 +18,7 @@ export default function SettingsPage() {
     sortBy,
     passwordAccess,
     accessPasswords,
+    envPasswordSet,
     isAddModalOpen,
     isExportModalOpen,
     isImportModalOpen,
@@ -53,6 +54,7 @@ export default function SettingsPage() {
         <PasswordSettings
           enabled={passwordAccess}
           passwords={accessPasswords}
+          envPasswordSet={envPasswordSet}
           onToggle={handlePasswordToggle}
           onAdd={handleAddPassword}
           onRemove={handleRemovePassword}

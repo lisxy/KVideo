@@ -14,6 +14,7 @@ export function useSettingsPage() {
 
     const [passwordAccess, setPasswordAccess] = useState(false);
     const [accessPasswords, setAccessPasswords] = useState<string[]>([]);
+    const [envPasswordSet, setEnvPasswordSet] = useState(false);
 
     useEffect(() => {
         const settings = settingsStore.getSettings();
@@ -21,6 +22,12 @@ export function useSettingsPage() {
         setSortBy(settings.sortBy);
         setPasswordAccess(settings.passwordAccess);
         setAccessPasswords(settings.accessPasswords);
+
+        // Fetch env password status
+        fetch('/api/config')
+            .then(res => res.json())
+            .then(data => setEnvPasswordSet(data.hasEnvPassword))
+            .catch(() => setEnvPasswordSet(false));
     }, []);
 
     const handleSourcesChange = (newSources: VideoSource[]) => {
@@ -139,6 +146,7 @@ export function useSettingsPage() {
         sortBy,
         passwordAccess,
         accessPasswords,
+        envPasswordSet,
         isAddModalOpen,
         isExportModalOpen,
         isImportModalOpen,
