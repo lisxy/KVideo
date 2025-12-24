@@ -155,13 +155,7 @@ docker run -d -p 3000:3000 -e ACCESS_PASSWORD=your_secret_password --name kvideo
 
 
 
-#### 选项 1：Cloudflare Pages 一键部署（推荐）
-
-<a href="https://deploy.workers.cloudflare.com/?url=https://github.com/KuekHaoYang/KVideo">
-  <img src="https://deploy.workers.cloudflare.com/button" alt="Deploy to Cloudflare Pages" />
-</a>
-
-#### 选项 2：Vercel 一键部署
+#### 选项 1：Vercel 一键部署（推荐）
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KuekHaoYang/KVideo)
 
@@ -170,7 +164,28 @@ docker run -d -p 3000:3000 -e ACCESS_PASSWORD=your_secret_password --name kvideo
 3. Vercel 会自动检测 Next.js 项目并部署
 4. 几分钟后即可访问你自己的 KVideo 实例
 
-#### 选项 2：Docker 部署
+#### 选项 2：Cloudflare Pages 部署 (推荐)
+
+1. **Fork** 本仓库到你的 GitHub 账户。
+2. 点击下方按钮进入 Cloudflare Pages 控制台：
+   <a href="https://dash.cloudflare.com/?to=/:account/pages/new" target="_blank">
+     <img src="https://img.shields.io/badge/Deploy%20to-Cloudflare%20Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Deploy to Cloudflare Pages">
+   </a>
+3. 选择 **"Connect to Git"**。
+4. 选择你刚刚 Fork 的 `KVideo` 仓库。
+5. **Build Settings（构建设置）** - 请确保完全一致：
+   - **Framework Preset**: `Next.js`
+   - **Build command**: `npm run pages:build`
+   - **Output directory**: `.vercel/output/static`
+6. 点击 **"Save and Deploy"**。
+7. **关键步骤：配置 Runtime（部署完成后）**：
+   - 进入项目详情页，点击 **"Settings"** -> **"Runtime"**。
+   - **Compatibility date**: 设置为 `2025-11-17`
+   - **Compatibility flags**: 添加 `nodejs_compat`
+   - **Fail open/closed**: 选择 `Fail open`
+   - *注意：如果初次部署失败，配置完这些选项后请并在 "Deployments" 页面点击 "Retry deployment" 重试。*
+
+#### 选项 3：Docker 部署
 
 **从 Docker Hub 拉取（最简单）：**
 
@@ -201,7 +216,7 @@ docker run -d -p 3000:3000 --name kvideo kvideo
 docker-compose up -d
 ```
 
-#### 选项 3：传统 Node.js 部署
+#### 选项 4：传统 Node.js 部署
 
 ```bash
 # 1. 克隆仓库
