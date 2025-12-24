@@ -24,6 +24,12 @@ export interface AppSettings {
   watchHistory: boolean;
   passwordAccess: boolean;
   accessPasswords: string[];
+  // Player settings
+  autoNextEpisode: boolean;
+  autoSkipIntro: boolean;
+  skipIntroSeconds: number;
+  autoSkipOutro: boolean;
+  skipOutroSeconds: number;
 }
 
 import { exportSettings, importSettings, SEARCH_HISTORY_KEY, WATCH_HISTORY_KEY } from './settings-helpers';
@@ -44,6 +50,11 @@ export const settingsStore = {
         watchHistory: true,
         passwordAccess: false,
         accessPasswords: [],
+        autoNextEpisode: true,
+        autoSkipIntro: false,
+        skipIntroSeconds: 0,
+        autoSkipOutro: false,
+        skipOutroSeconds: 0,
       };
     }
 
@@ -57,6 +68,11 @@ export const settingsStore = {
         watchHistory: true,
         passwordAccess: false,
         accessPasswords: [],
+        autoNextEpisode: true,
+        autoSkipIntro: false,
+        skipIntroSeconds: 0,
+        autoSkipOutro: false,
+        skipOutroSeconds: 0,
       };
     }
 
@@ -71,6 +87,11 @@ export const settingsStore = {
         watchHistory: parsed.watchHistory !== undefined ? parsed.watchHistory : true,
         passwordAccess: parsed.passwordAccess !== undefined ? parsed.passwordAccess : false,
         accessPasswords: Array.isArray(parsed.accessPasswords) ? parsed.accessPasswords : [],
+        autoNextEpisode: parsed.autoNextEpisode !== undefined ? parsed.autoNextEpisode : true,
+        autoSkipIntro: parsed.autoSkipIntro !== undefined ? parsed.autoSkipIntro : false,
+        skipIntroSeconds: typeof parsed.skipIntroSeconds === 'number' ? parsed.skipIntroSeconds : 0,
+        autoSkipOutro: parsed.autoSkipOutro !== undefined ? parsed.autoSkipOutro : false,
+        skipOutroSeconds: typeof parsed.skipOutroSeconds === 'number' ? parsed.skipOutroSeconds : 0,
       };
     } catch {
       return {
@@ -81,6 +102,11 @@ export const settingsStore = {
         watchHistory: true,
         passwordAccess: false,
         accessPasswords: [],
+        autoNextEpisode: true,
+        autoSkipIntro: false,
+        skipIntroSeconds: 0,
+        autoSkipOutro: false,
+        skipOutroSeconds: 0,
       };
     }
   },

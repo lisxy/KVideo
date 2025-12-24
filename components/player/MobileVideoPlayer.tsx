@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useScreenOrientation } from '@/lib/hooks/useMobilePlayer';
 import { useMobilePlayerState } from './hooks/useMobilePlayerState';
 import { useMobilePlayerLogic } from './hooks/useMobilePlayerLogic';
 import { useMobileGestures } from './hooks/useMobileGestures';
+import { useAutoSkip } from './hooks/useAutoSkip';
 import { MobileControlsWrapper } from './mobile/MobileControlsWrapper';
 import { MobileOverlay } from './mobile/MobileOverlay';
 import { MobileSkipIndicator } from './mobile/MobileSkipIndicator';
@@ -16,6 +16,10 @@ interface MobileVideoPlayerProps {
   onTimeUpdate?: (currentTime: number, duration: number) => void;
   initialTime?: number;
   shouldAutoPlay?: boolean;
+  // Episode navigation props for auto-skip/auto-next
+  totalEpisodes?: number;
+  currentEpisodeIndex?: number;
+  onNextEpisode?: () => void;
 }
 
 export function MobileVideoPlayer({
@@ -24,7 +28,10 @@ export function MobileVideoPlayer({
   onError,
   onTimeUpdate,
   initialTime = 0,
-  shouldAutoPlay = false
+  shouldAutoPlay = false,
+  totalEpisodes = 1,
+  currentEpisodeIndex = 0,
+  onNextEpisode,
 }: MobileVideoPlayerProps) {
   const { refs, state } = useMobilePlayerState();
 
@@ -44,6 +51,8 @@ export function MobileVideoPlayer({
     skipSide,
     toastMessage,
     showToast,
+    currentTime,
+    duration,
     setShowControls,
     setIsLoading
   } = state;
@@ -56,6 +65,17 @@ export function MobileVideoPlayer({
     onTimeUpdate,
     refs,
     state
+  });
+
+  // Auto-skip intro/outro and auto-next episode
+  useAutoSkip({
+    videoRef,
+    currentTime,
+    duration,
+    isPlaying,
+    totalEpisodes,
+    currentEpisodeIndex,
+    onNextEpisode,
   });
 
   const {

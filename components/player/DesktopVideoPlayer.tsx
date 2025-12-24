@@ -3,6 +3,7 @@
 import { useDesktopPlayerState } from './hooks/useDesktopPlayerState';
 import { useDesktopPlayerLogic } from './hooks/useDesktopPlayerLogic';
 import { useHlsPlayer } from './hooks/useHlsPlayer';
+import { useAutoSkip } from './hooks/useAutoSkip';
 import { DesktopControlsWrapper } from './desktop/DesktopControlsWrapper';
 import { DesktopOverlayWrapper } from './desktop/DesktopOverlayWrapper';
 
@@ -13,6 +14,10 @@ interface DesktopVideoPlayerProps {
   onTimeUpdate?: (currentTime: number, duration: number) => void;
   initialTime?: number;
   shouldAutoPlay?: boolean;
+  // Episode navigation props for auto-skip/auto-next
+  totalEpisodes?: number;
+  currentEpisodeIndex?: number;
+  onNextEpisode?: () => void;
 }
 
 export function DesktopVideoPlayer({
@@ -21,7 +26,10 @@ export function DesktopVideoPlayer({
   onError,
   onTimeUpdate,
   initialTime = 0,
-  shouldAutoPlay = false
+  shouldAutoPlay = false,
+  totalEpisodes = 1,
+  currentEpisodeIndex = 0,
+  onNextEpisode,
 }: DesktopVideoPlayerProps) {
   const { refs, state } = useDesktopPlayerState();
 
@@ -39,6 +47,8 @@ export function DesktopVideoPlayer({
 
   const {
     isPlaying,
+    currentTime,
+    duration,
     setShowControls,
     setIsLoading,
   } = state;
@@ -51,6 +61,17 @@ export function DesktopVideoPlayer({
     onTimeUpdate,
     refs,
     state
+  });
+
+  // Auto-skip intro/outro and auto-next episode
+  useAutoSkip({
+    videoRef,
+    currentTime,
+    duration,
+    isPlaying,
+    totalEpisodes,
+    currentEpisodeIndex,
+    onNextEpisode,
   });
 
   const {

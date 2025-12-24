@@ -76,6 +76,18 @@ function PlayerContent() {
     router.replace(`/player?${params.toString()}`, { scroll: false });
   };
 
+  // Handle auto-next episode
+  const handleNextEpisode = () => {
+    const episodes = videoData?.episodes;
+    if (!episodes || currentEpisode >= episodes.length - 1) return;
+
+    const nextIndex = currentEpisode + 1;
+    const nextEpisode = episodes[nextIndex];
+    if (nextEpisode) {
+      handleEpisodeClick(nextEpisode, nextIndex);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[var(--bg-color)]">
       {/* Glass Navbar */}
@@ -102,6 +114,8 @@ function PlayerContent() {
                 videoId={videoId || undefined}
                 currentEpisode={currentEpisode}
                 onBack={() => router.back()}
+                totalEpisodes={videoData?.episodes?.length || 1}
+                onNextEpisode={handleNextEpisode}
               />
               <VideoMetadata
                 videoData={videoData}

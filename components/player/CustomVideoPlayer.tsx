@@ -11,6 +11,10 @@ interface CustomVideoPlayerProps {
   onTimeUpdate?: (currentTime: number, duration: number) => void;
   initialTime?: number;
   shouldAutoPlay?: boolean;
+  // Episode navigation props for auto-skip/auto-next
+  totalEpisodes?: number;
+  currentEpisodeIndex?: number;
+  onNextEpisode?: () => void;
 }
 
 /**

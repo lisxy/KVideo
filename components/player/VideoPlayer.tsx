@@ -13,9 +13,12 @@ interface VideoPlayerProps {
   videoId?: string;
   currentEpisode: number;
   onBack: () => void;
+  // Episode navigation props for auto-skip/auto-next
+  totalEpisodes?: number;
+  onNextEpisode?: () => void;
 }
 
-export function VideoPlayer({ playUrl, videoId, currentEpisode, onBack }: VideoPlayerProps) {
+export function VideoPlayer({ playUrl, videoId, currentEpisode, onBack, totalEpisodes, onNextEpisode }: VideoPlayerProps) {
   const [videoError, setVideoError] = useState<string>('');
   const [useProxy, setUseProxy] = useState(false);
   const [shouldAutoPlay, setShouldAutoPlay] = useState(true);
@@ -131,6 +134,9 @@ export function VideoPlayer({ playUrl, videoId, currentEpisode, onBack }: VideoP
           onTimeUpdate={handleTimeUpdate}
           initialTime={getSavedProgress()}
           shouldAutoPlay={shouldAutoPlay}
+          totalEpisodes={totalEpisodes}
+          currentEpisodeIndex={currentEpisode}
+          onNextEpisode={onNextEpisode}
         />
       )}
     </Card>
